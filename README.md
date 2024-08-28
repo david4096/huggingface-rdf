@@ -23,7 +23,7 @@ pip install .
 After installing the package, you can use the command-line interface (CLI) to generate RDF data:
 
 ```
-
+export HF_API_KEY={YOUR_KEY}
 huggingface-rdf --fname huggingface.ttl --limit 10
 
 ```
