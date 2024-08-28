@@ -2,6 +2,8 @@
 
 `huggingface_rdf` is a Python tool that generates RDF (Resource Description Framework) data from datasets available on Hugging Face. This tool enables researchers and developers to convert data into a machine-readable format for enhanced querying and data analysis.
 
+This is made possible due to an effort to align to the [MLCommons Croissant](https://github.com/mlcommons/croissant) schema, which HF and others conform to.
+
 ## Features
 
 - Fetch datasets from Hugging Face.
@@ -29,6 +31,14 @@ huggingface-rdf --fname huggingface.ttl --limit 10
 ```
 
 Check out the `qlever_scripts` directory to get help loading the RDF into qlever for querying.
+
+You can also easily use Jena fuseki and load the generated .ttl file from the Fuseki ui.
+
+```
+
+docker run -it -p 3030:3030 stain/jena-fuseki
+
+```
 
 ## Contributing
 
