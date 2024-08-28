@@ -1,0 +1,3 @@
+*.pyc
+qlever_scripts/huggingface-datasets*
+.stxxl
