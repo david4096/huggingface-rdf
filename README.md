@@ -15,7 +15,7 @@ This is made possible due to an effort to align to the [MLCommons Croissant](htt
 To install `huggingface_rdf`, clone the repository and install the package using pip:
 
 ```bash
-git clone https://github.com/david4096/huggingface_rdf.git
+git clone https://github.com/david4096/huggingface-rdf.git
 cd huggingface-rdf
 pip install .
 ```
