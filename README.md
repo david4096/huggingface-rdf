@@ -3,6 +3,7 @@
 <a target="_blank" href="https://colab.research.google.com/github/david4096/huggingface-rdf/blob/main/example.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
+
 [![Open in Spaces](https://huggingface.co/datasets/huggingface/badges/resolve/main/open-in-hf-spaces-sm-dark.svg)]([https://huggingface.co/spaces](https://huggingface.co/spaces/david4096/huggingface-rdf))
 
 
