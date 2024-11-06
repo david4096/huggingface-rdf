@@ -37,7 +37,7 @@ def get_datasets(limit):
     """
     return list(list_datasets(limit=limit))
 
-def fetch_datasets(limit):
+def fetch_datasets(limit,use_api_key=True):
     """
     Fetches metadata for multiple datasets from Hugging Face, including the 'croissant' metadata file for each.
 
@@ -46,9 +46,10 @@ def fetch_datasets(limit):
 
     Args:
         limit (int): The maximum number of datasets to retrieve and process.
+        use_api_key (bool): A boolean determining if an API Key will be used to make the requests to Huggingface.
 
     Returns:
         list: A list of dictionaries, each containing the 'croissant' metadata for a dataset.
     """
     datasets = get_datasets(limit)
-    return [croissant_dataset(dataset.id) for dataset in datasets]
+    return [croissant_dataset(dataset.id,use_api_key) for dataset in datasets]

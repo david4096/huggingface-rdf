@@ -59,5 +59,10 @@ def test_fetch_croissant_dataset():
 
 def test_fetch_data_workflow():
     croissant_dataset = fetch_datasets(5)
+    assert len(croissant_dataset) == 5
+    for dataset in croissant_dataset:
+        if 'error' not in dataset.keys():
+            assert 'https://schema.org/' in dataset['@context']['@vocab']
+            assert 'http://mlcommons.org/croissant/' in dataset['@context']['cr']
     
     

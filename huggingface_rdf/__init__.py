@@ -13,7 +13,7 @@ __version__ = "0.1.0"
 __author__ = "David Steinberg"
 
 
-def generate_ttl(fname, limit):
+def generate_ttl(fname, limit, use_api_key=True):
     """
     Generate a Turtle (.ttl) file from datasets fetched from Hugging Face.
 
@@ -30,7 +30,7 @@ def generate_ttl(fname, limit):
     logger.info("Starting the process to generate a Turtle file.")
     try:
         logger.debug("Fetching datasets with a limit of %d", limit)
-        datasets = fetch_datasets(limit)
+        datasets = fetch_datasets(limit, use_api_key)
 
         logger.debug("Converting fetched datasets to RDF format.")
         ttl_path = convert_to_rdf(datasets, fname)
@@ -49,10 +49,11 @@ def main():
     parser = argparse.ArgumentParser(description="Generate a Turtle file from Hugging Face datasets.")
     parser.add_argument("--fname", type=str, required=False, default="huggingface.ttl", help="The filename for the output Turtle file.")
     parser.add_argument("--limit", type=int, required=False, default=10, help="The maximum number of datasets to fetch.")
+    parser.add_argument("--use_api_key", type=bool, required=False, default=True, help="Use API key for Hugging Face API requests.")
 
     args = parser.parse_args()
 
-    generate_ttl(args.fname, args.limit)
+    generate_ttl(args.fname, args.limit, args.use_api_key)
 
 if __name__ == "__main__":
     main()
