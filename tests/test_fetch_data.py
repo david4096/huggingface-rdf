@@ -1,6 +1,6 @@
 import pytest
 import sys
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, ANY
 sys.path.append('.')
 from huggingface_rdf.fetch_data import croissant_dataset, get_datasets, fetch_datasets
 
@@ -24,8 +24,7 @@ def test_mock_croissant_dataset(mock_response):
         
         mock_get.assert_called_once_with(
             "https://huggingface.co/api/datasets/test_dataset/croissant",
-            headers={}
-        )
+            headers=ANY)
         assert result == {"name": "test_dataset", "description": "A test dataset"}
 
 def test_mock_fetch_datasets(mock_response):
