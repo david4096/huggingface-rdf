@@ -15,7 +15,3 @@ def get_datasets(limit):
 def fetch_datasets(limit):
     datasets = get_datasets(limit)
     return [croissant_dataset(dataset.id) for dataset in datasets]
-
-def croissant_dataset_no_api_key(dsid):
-    response = requests.get(API_URL + dsid + "/croissant")
-    return response.json()
