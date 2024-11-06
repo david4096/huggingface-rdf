@@ -46,6 +46,19 @@ docker run -it -p 3030:3030 stain/jena-fuseki
 
 ```
 
+To lunch a jupyter notebook server to run and develop on the project locally run the following:
+```
+docker build -t huggingface-rdf .
+
+docker run -p 8888:8888 -v $(pwd):/app huggingface-rdf
+```
+The run command works for mac and linux for windows in PowerShell you need to use the following:
+```
+docker run -p 8888:8888 -v ${PWD}:/app huggingface-rdf
+```
+
+After that, you can access the Jupyter notebook server at http://localhost:8888.
+
 ## Contributing
 
 We welcome contributions! Please open an issue or submit a pull request!
