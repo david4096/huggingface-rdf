@@ -2,21 +2,27 @@ import requests
 import os
 from huggingface_hub import HfApi, list_datasets
 
-headers = {"Authorization": f"Bearer {os.environ['HF_API_KEY']}"}
+headers = {"Authorization": f"Bearer {os.environ.get('HF_API_KEY')}"} if os.environ.get('HF_API_KEY') else {}
+
 API_URL = "https://huggingface.co/api/datasets/"
 
-def croissant_dataset(dsid):
+def croissant_dataset(dsid,use_api_key=True):
     """
     Retrieves the 'croissant' metadata file for a specified dataset from Hugging Face.
 
     Args:
         dsid (str): The unique identifier of the dataset from which to retrieve the 'croissant' metadata file.
+        use_api_key (bool): A boolean determining if an API Key will be used to make the requests to Huggingface.
 
     Returns:
         dict: A JSON response containing metadata and details from the 'croissant' file for the specified dataset.
         
     """
-    response = requests.get(API_URL + dsid + "/croissant", headers=headers)
+    if use_api_key:
+        response = requests.get(API_URL + dsid + "/croissant", headers=headers)
+    else:
+        response = requests.get(API_URL + dsid + "/croissant")
+        
     return response.json()
 
 def get_datasets(limit):
@@ -46,7 +52,3 @@ def fetch_datasets(limit):
     """
     datasets = get_datasets(limit)
     return [croissant_dataset(dataset.id) for dataset in datasets]
-
-def croissant_dataset_no_api_key(dsid):
-    response = requests.get(API_URL + dsid + "/croissant")
-    return response.json()
