@@ -19,9 +19,13 @@ def croissant_dataset(dsid):
         dict: A JSON response containing metadata and details from the 'croissant' file for the specified dataset.
         
     """
-    response = requests.get(API_URL + dsid + "/croissant")
-        
-    return response.json()
+    request_url = API_URL + dsid + "/croissant/download"
+    response = requests.get(request_url)  
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print("Error downloading: ", dsid, response.status_code)
+        return None
 
 def get_datasets(limit):
     """
@@ -33,10 +37,20 @@ def get_datasets(limit):
     Returns:
         list: A list of dataset objects, each containing metadata for a Hugging Face dataset.
     """
+    page_num = 1
     api = KaggleApi()
     api.authenticate()
-    dataset_list = api.dataset_list()
-    return dataset_list[:limit]
+    final_datasets_list = []
+    len_final_datasets_list = 0
+    while(len_final_datasets_list < limit):
+        curr_dataset_list = api.dataset_list(page=page_num)
+        final_datasets_list.extend(curr_dataset_list)
+        len_final_datasets_list += len(curr_dataset_list)
+        print("Number of datasets:",len_final_datasets_list)
+        page_num += 1
+    
+    print("Number of datasets:",len(final_datasets_list))
+    return final_datasets_list[:limit]
 
 def fetch_datasets(limit):
     """
