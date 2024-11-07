@@ -49,7 +49,7 @@ docker run -it -p 3030:3030 stain/jena-fuseki
 
 ```
 
-To lunch a jupyter notebook server to run and develop on the project locally run the following:
+To launch a jupyter notebook server to run and develop on the project locally run the following:
 ```
 docker build -t huggingface-rdf .
 
