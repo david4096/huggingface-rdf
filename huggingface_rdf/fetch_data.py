@@ -1,6 +1,7 @@
 import requests
 import os
 from huggingface_hub import HfApi, list_datasets
+from tqdm import tqdm
 
 headers = {"Authorization": f"Bearer {os.environ['HF_API_KEY']}"}
 API_URL = "https://huggingface.co/api/datasets/"
@@ -14,4 +15,4 @@ def get_datasets(limit):
 
 def fetch_datasets(limit):
     datasets = get_datasets(limit)
-    return [croissant_dataset(dataset.id) for dataset in datasets]
+    return [croissant_dataset(dataset.id) for dataset in tqdm(datasets, desc="Fetching datasets")]
