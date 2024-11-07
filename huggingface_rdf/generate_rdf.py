@@ -26,7 +26,10 @@ def convert_to_rdf(data, output_file,base="http://fakebase"):
         str: A string representation of the RDF graph in Turtle format.
     """
     total_items = len(data)
-    chunk_size = total_items // 100 
+    if total_items > 100:
+        chunk_size = total_items // 100
+    else:
+        chunk_size = 1
     logging.info(f"Starting RDF conversion. Total items: {total_items}, Chunk size: {chunk_size}")
 
     g = Graph()
