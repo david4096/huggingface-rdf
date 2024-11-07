@@ -1,6 +1,7 @@
 import requests
 import os
 from huggingface_hub import HfApi, list_datasets
+from tqdm import tqdm
 
 headers = {"Authorization": f"Bearer {os.environ.get('HF_API_KEY')}"} if os.environ.get('HF_API_KEY') else {}
 
@@ -52,4 +53,4 @@ def fetch_datasets(limit,use_api_key=True):
         list: A list of dictionaries, each containing the 'croissant' metadata for a dataset.
     """
     datasets = get_datasets(limit)
-    return [croissant_dataset(dataset.id,use_api_key) for dataset in datasets]
+    return [croissant_dataset(dataset.id) for dataset in tqdm(datasets, desc="Fetching datasets")]

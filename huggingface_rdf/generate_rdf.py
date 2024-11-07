@@ -1,15 +1,16 @@
 from rdflib import Graph, Namespace, URIRef, Literal
 import json
 import logging
+from tqdm import tqdm
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 
-def show_progress(current, total):
-    """Display progress of completion."""
-    progress = (current / total) * 100
-    print(f"Progress: {current}/{total} ({progress:.2f}%)")
-
+def chunk_data(data, chunk_size):
+    """Chunking data"""
+    for i in range(0, len(data), chunk_size):
+        yield data[i:i + chunk_size]
+            
 def convert_to_rdf(data, output_file,base="http://fakebase"):
     """
     This function takes a JSON-serializable data structure, converts it to RDF using 
@@ -24,19 +25,18 @@ def convert_to_rdf(data, output_file,base="http://fakebase"):
     Returns:
         str: A string representation of the RDF graph in Turtle format.
     """
-    json_ld_data = json.dumps(data)
-    
-    total_items = len(data) if isinstance(data, list) else 1
-    logging.info(f"Starting RDF conversion. Total items: {total_items}")
+    total_items = len(data)
+    chunk_size = total_items // 100 
+    logging.info(f"Starting RDF conversion. Total items: {total_items}, Chunk size: {chunk_size}")
 
-    for i, item in enumerate(data if isinstance(data, list) else [data], start=1):
-            show_progress(i, total_items)
-        
-    g = Graph().parse(
-        data=json_ld_data,
-        format='json-ld',
-        base=URIRef(base)
-    )
+    g = Graph()
+
+    with tqdm(total=total_items, desc="Parsing data") as pbar:
+        for chunk in chunk_data(data, chunk_size):
+            for item in chunk:
+                item_json_ld = json.dumps(item)
+                g.parse(data=item_json_ld, format='json-ld', base=URIRef(base))
+                pbar.update(1)
 
     logging.info(f"RDF data successfully saved to {output_file}")
     # Implementation for generating RDF
