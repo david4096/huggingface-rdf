@@ -1,3 +1,4 @@
+tests/data
 *.pyc
 qlever_scripts/huggingface-datasets*
 .stxxl
