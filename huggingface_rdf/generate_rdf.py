@@ -41,7 +41,7 @@ def convert_to_rdf(data, output_file,base="http://fakebase"):
                 g.parse(data=item_json_ld, format='json-ld', base=URIRef(base))
                 pbar.update(1)
 
-    logging.info(f"RDF data successfully saved to {output_file}")
+    logging.info(f"RDF data being written to disk, this could take some time... {output_file}")
     # Implementation for generating RDF
     return g.serialize(destination=output_file, format='ttl')
     

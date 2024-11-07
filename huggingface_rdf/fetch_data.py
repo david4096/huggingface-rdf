@@ -1,7 +1,12 @@
+import logging
 import requests
 import os
 from huggingface_hub import HfApi, list_datasets
 from tqdm import tqdm
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
 
 headers = {"Authorization": f"Bearer {os.environ.get('HF_API_KEY')}"} if os.environ.get('HF_API_KEY') else {}
 
@@ -52,5 +57,31 @@ def fetch_datasets(limit,use_api_key=True):
     Returns:
         list: A list of dictionaries, each containing the 'croissant' metadata for a dataset.
     """
-    datasets = get_datasets(limit)
-    return [croissant_dataset(dataset.id) for dataset in tqdm(datasets, desc="Fetching datasets")]
+    logging.info(f"Fetching {limit} datasets from Hugging Face.")
+
+    try:
+        datasets = get_datasets(limit)
+        logging.info(f"Got {len(datasets)} datasets from Hugging Face.")
+    except Exception as e:
+        logging.error(f"Error fetching datasets: {e}")
+        return []
+
+    # Create a thread pool
+    results = []
+    try:
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            # Submit each dataset to the thread pool
+            futures = {executor.submit(croissant_dataset, dataset.id): dataset.id for dataset in datasets}            # Use tqdm to show progress
+            for future in tqdm(as_completed(futures), total=len(futures), desc="Fetching datasets"):
+                dataset_id = futures[future]
+                try:
+                    results.append(future.result())
+                except Exception as e:
+                    logging.error(f"Error processing dataset {dataset_id}: {e}")
+
+    except KeyboardInterrupt:
+        logging.warning("Process interrupted by user. Shutting down...")
+        executor.shutdown(wait=False)  # Cancel remaining futures
+        raise  # Reraise the exception to exit immediately
+
+    return results
