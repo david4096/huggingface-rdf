@@ -1,4 +1,6 @@
-# _!!This repository is no longer maintained. Please see [croissant-rdf](https://github.com/david4096/croissant-rdf) for future work!!__
+# _!!This repository is no longer maintained. 
+
+# Please see [croissant-rdf](https://github.com/david4096/croissant-rdf) for future work!!__
 
 # huggingface_rdf
 
